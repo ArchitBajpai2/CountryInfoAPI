@@ -35,7 +35,7 @@ class CountryInfoView(APIView):
                         area_parts = value_text.split("\n")
                         for area_part in area_parts:
                             if "Total" in area_part:
-                                total_area = area_part.replace("Total", "").strip()
+                                total_area = area_part.replace("Total:", "").strip()
                                 if "km²" in total_area:
                                     data["area_total"] = int(total_area.split()[0].replace(",",""))
 
