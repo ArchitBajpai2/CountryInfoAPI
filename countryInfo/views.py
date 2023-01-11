@@ -27,7 +27,7 @@ class CountryInfoView(APIView):
                 elif key_text == "Official languages":
                     languages = []
                     for element in value.find_all("a"):
-                        languages.append(element.text)
+                        languages.append(element.text.strip())
                     data["official_languages"] = languages
                 elif key_text == "Area":
                     value_text = value.text.strip()
@@ -38,17 +38,17 @@ class CountryInfoView(APIView):
                                 total_area = area_part.replace("Total", "").strip()
                                 if "km²" in total_area:
                                     data["area_total"] = int(total_area.split()[0].replace(",",""))
+
                 elif key_text == "Population":
                     population_string = value.text.strip()
                     population_parts = population_string.split(" ")
                     data["population"] = int(float(population_parts[0].replace(",", "")) * int(population_parts[1]))
                 elif key_text == "GDP (nominal)":
-                     if key_text == "GDP (nominal)":
-                        GDP_parts = value.text.strip().split("\n")
-                        for GDP_part in GDP_parts:
-                            if "Total" in GDP_part:
-                                GDP_part_parts = GDP_part.split(" ")
-                                data["GDP_nominal"] = float(GDP_part_parts[1].replace(",", ""))
+                    GDP_parts = value.text.strip().split("\n")
+                    for GDP_part in GDP_parts:
+                        if "Total" in GDP_part:
+                            GDP_part_parts = GDP_part.split(" ")
+                            data["GDP_nominal"] = float(GDP_part_parts[1].replace(",", ""))
         # Extracting flag link
         img_src = info_box.find("img")["src"]
         img_src = "https:" + img_src
